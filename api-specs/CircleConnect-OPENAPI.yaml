@@ -1,0 +1,302 @@
+openapi: 3.0.4
+info:
+  title: CircleConnect API
+  description: API Specs for CircleConnect
+  version: 1.0.0
+servers:
+  - url: https://api.circleconnect.com/v1
+tags:
+  - name: Authentication
+    description: User authentication and profile management
+  - name: Communities
+    description: Community management and operations
+  - name: Posts
+    description: Post creation, management, and interactions
+  - name: Stories
+    description: Story creation and management
+  - name: Admin
+    description: Administrative operations
+  - name: Notifications
+    description: Notification management
+paths:
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: User login via Google OAuth2
+      description: Users can log in via Google OAuth2 and receive JWT tokens
+      responses:
+        '200':
+          description: Successfully logged in
+  /auth/me:
+    get:
+      tags:
+        - Authentication
+      summary: Retrieve authenticated user details
+      description: Get details of the currently authenticated user
+      responses:
+        '200':
+          description: User details retrieved
+  /auth/update-profile:
+    put:
+      tags:
+        - Authentication
+      summary: Update user profile information
+      description: Update profile information for the authenticated user
+      responses:
+        '200':
+          description: Profile updated
+  /communities:
+    get:
+      tags:
+        - Communities
+      summary: List available communities
+      description: Users can browse existing communities
+      responses:
+        '200':
+          description: List of communities
+    post:
+      tags:
+        - Communities
+      summary: Create a new community (Admin only)
+      description: Admins can create new communities
+      responses:
+        '201':
+          description: Community created
+  /communities/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    put:
+      tags:
+        - Communities
+      summary: Update a community (Admin only)
+      description: Admins can update community information
+      responses:
+        '200':
+          description: Community updated
+    delete:
+      tags:
+        - Communities
+      summary: Delete a community (Admin only)
+      description: Admins can delete communities
+      responses:
+        '200':
+          description: Community deleted
+  /communities/{id}/join:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    post:
+      tags:
+        - Communities
+      summary: Join a community
+      description: Users can join communities
+      responses:
+        '200':
+          description: Successfully joined
+  /communities/{id}/leave:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    post:
+      tags:
+        - Communities
+      summary: Leave a community
+      description: Users can leave communities
+      responses:
+        '200':
+          description: Successfully left
+  /communities/{id}/remove-user/{userId}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+    delete:
+      tags:
+        - Communities
+      summary: Admin removes a user from a community
+      description: Admins can remove users from communities
+      responses:
+        '200':
+          description: User removed
+  /posts:
+    post:
+      tags:
+        - Posts
+      summary: Create a post
+      description: Users can create posts in communities they've joined
+      responses:
+        '201':
+          description: Post created
+  /posts/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    put:
+      tags:
+        - Posts
+      summary: Edit a post
+      description: Users can edit their own posts
+      responses:
+        '200':
+          description: Post edited
+    delete:
+      tags:
+        - Posts
+      summary: Delete a post
+      description: Users can delete their own posts
+      responses:
+        '200':
+          description: Post deleted
+  /posts/{id}/like:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    post:
+      tags:
+        - Posts
+      summary: Like a post
+      description: Users can like posts in communities they've joined
+      responses:
+        '200':
+          description: Post liked
+  /posts/community/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - Posts
+      summary: Get all posts for a community
+      description: Retrieve all posts in a specific community
+      responses:
+        '200':
+          description: List of posts
+  /stories:
+    post:
+      tags:
+        - Stories
+      summary: Create a new story
+      description: Users can create temporary stories in communities they've joined
+      responses:
+        '201':
+          description: Story created
+  /stories/community/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - Stories
+      summary: View all stories in a community
+      description: Users can view stories in communities they've joined
+      responses:
+        '200':
+          description: List of stories
+  /stories/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    delete:
+      tags:
+        - Stories
+      summary: Delete a story
+      description: Users can delete their own stories
+      responses:
+        '200':
+          description: Story deleted
+  /admin/posts/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    delete:
+      tags:
+        - Admin
+      summary: Admin deletes a post
+      description: Admins can delete any post on the platform
+      responses:
+        '200':
+          description: Post deleted
+  /admin/stories/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    delete:
+      tags:
+        - Admin
+      summary: Admin deletes a story
+      description: Admins can delete any story on the platform
+      responses:
+        '200':
+          description: Story deleted
+  /admin/users/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    delete:
+      tags:
+        - Admin
+      summary: Admin removes a user from the platform
+      description: Admins can remove users from the platform
+      responses:
+        '200':
+          description: User removed
+  /notifications:
+    get:
+      tags:
+        - Notifications
+      summary: Retrieve user notifications
+      description: Users can get their notifications
+      responses:
+        '200':
+          description: List of notifications
+  /notifications/send:
+    post:
+      tags:
+        - Notifications
+      summary: Send a notification
+      description: System can send notifications to users
+      responses:
+        '200':
+          description: Notification sent
